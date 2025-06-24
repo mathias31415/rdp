@@ -36,6 +36,20 @@ def pldist(point, start, end):
             np.abs(np.linalg.norm(np.cross(end - start, start - point))),
             np.linalg.norm(end - start))
 
+def pldist_nd(point, start, end):
+    """
+    Generalized point-to-line distance for N-D space.
+    """
+    line_vec = end - start
+    point_vec = point - start
+    line_len = np.linalg.norm(line_vec)
+    
+    if line_len == 0:
+        return np.linalg.norm(point - start)
+    
+    projection = np.dot(point_vec, line_vec) / line_len
+    closest_point = start + (projection / line_len) * line_vec
+    return np.linalg.norm(point - closest_point)
 
 def rdp_rec(M, epsilon, dist=pldist):
     """
